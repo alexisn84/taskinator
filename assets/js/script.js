@@ -240,15 +240,46 @@ var loadTasks = function() {
     //get task items from localStorage
     
     //convert tasks from string format back into an array of objects
-    var loadTask = JSON.parse(window.localStorage.getItem('tasks'));
-    console.log(loadTask);
+    var tasks = JSON.parse(window.localStorage.getItem('tasks'));
+    console.log(tasks);
 
     //print task items to the page
     for (var i = 0; i < tasks.length; i++) {
-        if (localStorage.getItem('tasks[i]')){
-            populateStorage();
+        if (tasks [i].status === 'to do') {
+            var listStatus = document.createElement ("li")
+            listStatus.textContent = tasks [i].name 
+            tasksToDoEl.appendChild(listStatus)
         }
+
+        if (tasks [i].status === 'in progress') {
+            var listStatus = document.createElement ("li")
+            listStatus.textContent = tasks [i].name 
+            tasksInProgressEl.appendChild(listStatus)
+        }
+
+        if (tasks [i].status === "completed") {
+            var listStatus = document.createElement ("li")
+            listStatus.textContent = tasks [i].name 
+            tasksCompletedEl.appendChild(listStatus)
+        } 
         console.log(tasks[i]);
+
+        //style
+        var listItemEl = document.createElement("li");
+        listItemEl.className = "task-item";
+        listItemEl.setAttribute("data-task-id", tasks[i].id);
+
+        // create div to hold task info and add to list item
+        var taskInfoEl = document.createElement("div");
+        taskInfoEl.className = "task-info";
+
+        // add HTML content to div
+        taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
+        listItemEl.appendChild(taskInfoEl);
+
+        //create actions for task
+        var taskActionsEl = createTaskActions(tasks[i].id);
+        listItemEl.appendChild(taskActionsEl);
     }
 }
 
