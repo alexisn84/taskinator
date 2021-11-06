@@ -245,41 +245,38 @@ var loadTasks = function() {
 
     //print task items to the page
     for (var i = 0; i < tasks.length; i++) {
-        if (tasks [i].status === 'to do') {
-            var listStatus = document.createElement ("li")
-            listStatus.textContent = tasks [i].name 
+        var listStatus = document.createElement("li");
+            listStatus.className = "task-item";
+            listStatus.setAttribute("data-task-id", tasks[i].id);
+            listStatus.textContent = tasks[i].name
+
+             // create div to hold task info and add to list item
+            var taskInfoEl = document.createElement("div");
+            taskInfoEl.className = "task-info";
+
+             // add HTML content to div
+            taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
+            listStatus.appendChild(taskInfoEl);
+            
+            //call buttons and drop down
+            var actionButtons = createTaskActions(i)
+            listStatus.appendChild(actionButtons)
+
+        if (tasks[i].status === 'to do') {
             tasksToDoEl.appendChild(listStatus)
         }
 
-        if (tasks [i].status === 'in progress') {
-            var listStatus = document.createElement ("li")
-            listStatus.textContent = tasks [i].name 
+        else if (tasks[i].status === 'in progress') {
             tasksInProgressEl.appendChild(listStatus)
         }
 
-        if (tasks [i].status === "completed") {
-            var listStatus = document.createElement ("li")
-            listStatus.textContent = tasks [i].name 
+        else if (tasks[i].status === "completed") {
             tasksCompletedEl.appendChild(listStatus)
         } 
         console.log(tasks[i]);
 
-        //style
-        var listItemEl = document.createElement("li");
-        listItemEl.className = "task-item";
-        listItemEl.setAttribute("data-task-id", tasks[i].id);
-
-        // create div to hold task info and add to list item
-        var taskInfoEl = document.createElement("div");
-        taskInfoEl.className = "task-info";
-
-        // add HTML content to div
-        taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
-        listItemEl.appendChild(taskInfoEl);
-
-        //create actions for task
-        var taskActionsEl = createTaskActions(tasks[i].id);
-        listItemEl.appendChild(taskActionsEl);
+        // increase task counter for next unique id
+        taskIdCounter++;
     }
 }
 
